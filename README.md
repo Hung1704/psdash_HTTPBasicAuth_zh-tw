@@ -16,8 +16,7 @@ This project originally uses code from [wenguonideshou/psdash_HTTPBasicAuth](htt
 ### 1\. **伺服器監控系統總覽**
 
 新增的功能可以顯示每台伺服器的關鍵資源使用情況，具體包括：
-
-[](Picture/monitor.png)
+![test](Picture/monitor.png)
 
 * **Node**：顯示每台伺服器的名稱或編號，方便管理和查找，點擊後可以進入 glanses 程式查看。
 * **Type**：伺服器類型，例如 `General`、`TA/RA` 或 `Data`，標示伺服器的使用目的或身份。
@@ -37,6 +36,7 @@ This project originally uses code from [wenguonideshou/psdash_HTTPBasicAuth](htt
 
 ### 3\. **伺服器使用人數變化圖**
 
+![test](Picture/user.png)
 * 新功能還可展示近 7 日內伺服器的使用人數變化趨勢圖。這一圖表可以分析每日的尖峰時段，並幫助預測未來的高負載時間，從而使管理者更好地優化資源分配。
 * **尖峰分析**：透過變化圖，可以清楚看到伺服器在尖峰時段（例如白天或特定時段）出現的使用人數激增，這有助於提前計劃擴充伺服器資源或調整使用策略。
 
