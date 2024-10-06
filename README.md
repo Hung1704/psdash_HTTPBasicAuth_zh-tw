@@ -1,4 +1,4 @@
-# psdash\_HTTPBasicAuth
+# psdash\_HTTPBasicAuth 繁體中文版
 
 This project originally uses code from [wenguonideshou/psdash_HTTPBasicAuth](https://github.com/wenguonideshou/psdash_HTTPBasicAuth). Special thanks to [wenguonideshou](https://github.com/wenguonideshou) for their contributions.
 
