@@ -17,6 +17,8 @@ This project originally uses code from [wenguonideshou/psdash_HTTPBasicAuth](htt
 
 新增的功能可以顯示每台伺服器的關鍵資源使用情況，具體包括：
 
+[](Picture/monitor.png)
+
 * **Node**：顯示每台伺服器的名稱或編號，方便管理和查找，點擊後可以進入 glanses 程式查看。
 * **Type**：伺服器類型，例如 `General`、`TA/RA` 或 `Data`，標示伺服器的使用目的或身份。
 * **OS**：顯示每台伺服器的操作系統，例如 `CentOS`，讓管理者清楚每台伺服器的運行環境。
