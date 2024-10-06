@@ -1,0 +1,6 @@
+while true;
+do
+	python3 user.py
+	python3 plot-web.py '7days'
+	sleep 300s
+done

@@ -1,0 +1,45 @@
+{% if not is_xhr|default(false) %}{% extends "base.html" %}{% endif -%}
+{% block content %}
+    <div id="process" class="box">
+        <div class="box-header">
+            <span>{{ process.name }} ({{ process.pid }})</span>
+        </div>
+        <div class="box-content">
+            <ul class="nav nav-tabs" role="tablist">
+                <li {% if section == "overview" %}class="active"{% endif %}>
+                    <a href="{{ url_for(".process", pid=process.pid) }}">概述</a>
+                </li>
+                <li {% if section == "environment" %}class="active"{% endif %}>
+                    <a href="{{ url_for(".process", pid=process.pid, section="environment") }}">
+                        環境變量
+                    </a>
+                </li>
+                <li {% if section == "threads" %}class="active"{% endif %}>
+                    <a href="{{ url_for(".process", pid=process.pid, section="threads") }}">
+                        線程 <span class="badge">{{ process.num_threads }}</span>
+                    </a>
+                </li>
+                <li {% if section == "files" %}class="active"{% endif %}>
+                    <a href="{{ url_for(".process", pid=process.pid, section="files") }}">
+                        打開文件數 <span class="badge">{{ process.num_files }}</span>
+                    </a>
+                </li>
+                <li {% if section == "connections" %}class="active"{% endif %}>
+                    <a href="{{ url_for(".process", pid=process.pid, section="connections") }}">連接數</a>
+                </li>
+                <li {% if section == "memory" %}class="active"{% endif %}>
+                    <a href="{{ url_for(".process", pid=process.pid, section="memory") }}">記憶體占用</a>
+                </li>
+                <li {% if section == "children" %}class="active"{% endif %}>
+                    <a href="{{ url_for(".process", pid=process.pid, section="children") }}">
+                        子進程 <span class="badge">{{ process.num_children }}</span>
+                    </a>
+                </li>
+                <li {% if section == "limits" %}class="active"{% endif %}>
+                    <a href="{{ url_for(".process", pid=process.pid, section="limits") }}">資源限制</a>
+                </li>
+            </ul>
+            {% block process_content %}{% endblock %}
+        </div>
+    </div>
+{% endblock %}

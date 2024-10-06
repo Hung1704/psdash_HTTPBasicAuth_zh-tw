@@ -1,0 +1,6 @@
+#!/bin/bash
+
+nohup python run.py -l '/var/log/*' -l '/var/log/**/*.log' &
+pssh -h someHosts -l root "psdash -a -l '/var/log/*' -l '/var/log/**/*.log' --register-to http://140.113.228.20:5000"
+pssh -h someHosts -l root "glances -w"
+nohup glances -w &

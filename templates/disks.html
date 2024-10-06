@@ -1,0 +1,71 @@
+{% if not is_xhr|default(false) %}{% extends "base.html" %}{% endif -%}
+{% block content %}
+    <div id="disks">
+        <div class="box">
+            <div class="box-header">
+                <span>硬碟</span>
+            </div>
+            <div class="box-content">
+                <table id="processes" class="table table-condensed">
+                    <thead>
+                        <tr>
+                            <th>檔案系統</th>
+                            <th>掛載點</th>
+                            <th>類型</th>
+                            <th>選項</th>
+                            <th>容量</th>
+                            <th>已使用</th>
+                            <th>空閒</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            {% for d in disks %}
+                            <tr>
+                                <td>{{ d.device }}</td>
+                                <td>{{ d.mountpoint.decode("utf-8") }}</td>
+                                <td>{{ d.type }}</td>
+                                <td>{{ d.options }}</td>
+                                <td>{{ d.space_total|filesizeformat }}</td>
+                                <td>{{ d.space_used|filesizeformat }} ({{ d.space_used_percent }} %)</td>
+                                <td>{{ d.space_free|filesizeformat }}</td>
+                            </tr>
+                            {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="box">
+            <div class="box-header">
+                <span>硬碟I/O</span>
+            </div>
+            <div class="box-content">
+                <table id="processes" class="table">
+                    <thead>
+                        <tr>
+                            <th>檔案系統</th>
+                            <th>讀取IO數</th>
+                            <th>寫入IO數</th>
+                            <th>讀取字節數</th>
+                            <th>寫入字節數</th>
+                            <th>讀取時間(ms)</th>
+                            <th>寫入時間(ms)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for dev, io in io_counters %}
+                        <tr>
+                            <td>{{ dev }}</td>
+                            <td>{{ io.read_count }}</td>
+                            <td>{{ io.write_count }}</td>
+                            <td>{{ io.read_bytes }}</td>
+                            <td>{{ io.write_bytes }}</td>
+                            <td>{{ io.read_time }}</td>
+                            <td>{{ io.write_time }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

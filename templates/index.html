@@ -1,0 +1,177 @@
+{% if not is_xhr|default(false) %}{% extends "base.html" %}{% endif -%}
+{% block content %}
+    <div id="dashboard">
+        <div class="box cpu">
+            <div class="box-header">
+                <span>CPU</span>
+            </div>
+            <div class="box-content">
+                <table class="table">
+                    <tr>
+                        <td class="label-col">負載</td>
+                        <td class="load" style="word-spacing: 10px;">{{ load_avg[0]|round(2) }} {{ load_avg[1]|round(2) }} {{ load_avg[2]|round(2) }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label-col">使用者占用</td>
+                        <td class="user">{{ cpu.user }} %</td>
+                    </tr>
+                    <tr>
+                        <td class="label-col">內核占用</td>
+                        <td class="system">{{ cpu.system }} %</td>
+                    </tr>
+                    <tr>
+                        <td class="label-col">空閒</td>
+                        <td class="idle">{{ cpu.idle }} %</td>
+                    </tr>
+                    <tr>
+                        <td class="label-col">I/O wait</td>
+                        <td class="iowait">{{ cpu.iowait }} %</td>
+                    </tr>
+                    <tr>
+                        <td class="label-col">核心數</td>
+                        <td class="iowait">{{ num_cpus }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="box memory">
+            <div class="box-header">
+                <span>記憶體</span>
+            </div>
+            <div class="box-content">
+                <table class="table">
+                    <tr>
+                        <td class="label-col">容量</td>
+                        <td class="total">{{ memory.total|filesizeformat }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label-col">已使用<small>(cache &amp; buffers)</small></td>
+                        <td class="used_excl">{{ (memory.total - memory.available)|filesizeformat }} ({{ memory.percent }} %)</td>
+                    </tr>
+                    <tr>
+                        <td class="label-col">可使用<small>(cache &amp; buffers)</small></td>
+                        <td class="available">{{ memory.available|filesizeformat }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label-col">已使用<small>(不含cache &amp; buffers)</small></td>
+                        <td class="used_incl">{{ memory.used|filesizeformat }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label-col">可使用<small>(不含cache &amp; buffers)</small></td>
+                        <td class="free">{{ memory.free|filesizeformat }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="box network">
+            <div class="box-header">
+                <span>網路</span>
+            </div>
+            <div class="box-content">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>網卡</th>
+                            <th>IP地址</th>
+                            <th>上傳速度(TX/s)</th>
+                            <th>下載速度(RX/s)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for ni in net_interfaces %}
+                            <tr>
+                                <td>{{ ni.name.decode("utf-8") }}</td>
+                                <td>{{ ni.ip }}</td>
+                                <td>{{ ni.send_rate|default(0)|filesizeformat }}/s</td>
+                                <td>{{ ni.recv_rate|default(0)|filesizeformat }}/s</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="box disks">
+            <div class="box-header">
+                <span>硬碟</span>
+            </div>
+            <div class="box-content">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>檔案系統</th>
+                            <th>掛載點</th>
+                            <th>容量</th>
+                            <th>已使用</th>
+                            <th>可使用</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for d in disks %}
+                            <tr>
+                                <td>{{ d.device }}</td>
+                                <td>{{ d.mountpoint.decode("utf-8") }}</td>
+                                <td>{{ d.space_total|filesizeformat }}</td>
+                                <td>{{ d.space_used|filesizeformat }} ({{ d.space_used_percent }} %)</td>
+                                <td>{{ d.space_free|filesizeformat }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="box swap">
+            <div class="box-header">
+                <span>Swap</span>
+            </div>
+            <div class="box-content">
+                <table class="table">
+                    <tr>
+                        <td class="label-col">容量</td>
+                        <td class="total">{{ swap.total|filesizeformat }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label-col">已使用</td>
+                        <td class="used">{{ swap.used|filesizeformat }} ({{ swap.percent }} %)</td>
+                    </tr>
+                    <tr>
+                        <td class="label-col">可使用</td>
+                        <td class="free">{{ swap.free|filesizeformat }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label-col">換入</td>
+                        <td class="swapped-in">{{ swap.swapped_in|filesizeformat }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label-col">換出</td>
+                        <td class="swapped-out">{{ swap.swapped_out|filesizeformat }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="box users">
+            <div class="box-header">
+                <span>當前用戶</span>
+            </div>
+            <div class="box-content">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>用戶名</th>
+                            <th>登入時間</th>
+                            <th>登入IP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for u in users %}
+                            <tr>
+                                <td>{{ u.name.decode("utf-8") }}</td>
+                                <td>{{ u.started|fromtimestamp }}</td>
+                                <td>{{ u.host }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

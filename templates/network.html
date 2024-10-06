@@ -1,0 +1,129 @@
+{% if not is_xhr|default(false) %}{% extends "base.html" %}{% endif -%}
+{% block content %}
+    <div class="box">
+        <div class="box-header">
+            <span>網卡流量</span>
+        </div>
+        <div class="box-content">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>網卡</th>
+                        <th>IP地址</th>
+                        <th>已發送Byte數</th>
+                        <th>已接收Byte數</th>
+                        <th>已發送封包</th>
+                        <th>已接收封包</th>
+                        <th>已接收壞掉封包</th>
+                        <th>已發送壞掉封包</th>
+                        <th>已丟棄接收封包</th>
+                        <th>已丟發送收封包</th>
+                        <th>每秒發送Byte數(TX/s)</th>
+                        <th>每秒接收Byte數(RX/s)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for io in network_interfaces %}
+                    <tr>
+                        <td>{{ io.name.decode("utf-8") }}</td>
+                        <td>{{ io.ip }}</td>
+                        <td>{{ io.bytes_sent }}</td>
+                        <td>{{ io.bytes_recv }}</td>
+                        <td>{{ io.packets_sent }}</td>
+                        <td>{{ io.packets_recv }}</td>
+                        <td>{{ io.errors_in }}</td>
+                        <td>{{ io.errors_out }}</td>
+                        <td>{{ io.dropped_in }}</td>
+                        <td>{{ io.dropped_out }}</td>
+                        <td>{{ io.send_rate|default(0)|filesizeformat }}/s</td>
+                        <td>{{ io.recv_rate|default(0)|filesizeformat }}/s</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="box">
+        <div class="box-header">
+            <span>網路連接</span>
+            <small class="pull-right">找到 {{ connections|count() }} 個網路連接</small>
+        </div>
+        <div class="box-content">
+            <form id="connections-form" action="" method="get">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>文件描述符</th>
+                            <th>進程ID</th>
+                            <th>協議</th>
+                            <th>套接字類型</th>
+                            <th>本機地址</th>
+                            <th>遠程地址</th>
+                            <th>狀態</th>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th>
+                                <select name="family">
+                                    <option value="">全部</option>
+                                    {% for val in socket_families.itervalues() %}
+                                        <option value="{{ val }}" {{'selected="selected"' if family == val}}>{{ val }}</option>
+                                    {% endfor %}
+                                </select>
+                            </th>
+                            <th>
+                                <select name="type">
+                                    <option value="">全部</option>
+                                    {% for val in socket_types.itervalues() %}
+                                        <option value="{{ val }}"  {{'selected="selected"' if type == val}}>{{ val }}</option>
+                                    {% endfor %}
+                                </select>
+                            </th>
+                            <th>
+                                <input type="text" name="local_addr" value="{{ local_addr_host }}{{ ":" + local_addr_port|string() if local_addr_port }}" />
+                            </th>
+                            <th>
+                                <input type="text" name="remote_addr" value="{{ remote_addr_host }}{{ ":" + remote_addr_port|string() if remote_addr_port }}" />
+                            </th>
+                            <th>
+                                <select name="state">
+                                    <option value="">全部</option>
+                                    {% for val in states %}
+                                        <option value="{{ val }}"  {{'selected="selected"' if state == val}}>{{ val }}</option>
+                                    {% endfor %}
+                                </select>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for c in connections %}
+                        <tr>
+                            <td>
+                                {{ c.fd if c.fd > 0 else "-" }}
+                            </td>
+                            <td>
+                                {% if c.pid %}
+                                    <a href="{{ url_for(".process", pid=c.pid, section="connections") }}">{{ c.pid }}</a>
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                            <td>{{ c.family }}</td>
+                            <td>{{ c.type }}</td>
+                            <td>
+                                {{ c.local_addr_host|default("", True) }}:{{ c.local_addr_port|default("", True) }}
+                            </td>
+                            <td>
+                                {{ c.remote_addr_host|default("", True) }}:{{ c.remote_addr_port|default("", True) }}
+                            </td>
+                            <td>{{ c.state }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,3 @@
+#!/bin/bash
+kill `ps -aux | grep "python run.py" | grep -v grep | awk '{print $2}'`
+

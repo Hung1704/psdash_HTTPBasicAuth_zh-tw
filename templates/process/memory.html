@@ -1,0 +1,37 @@
+{% extends "process.html" %}
+{% block process_content %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>文件名</th>
+                <th>物理記憶體(RSS)</th>
+                <th>占用空間</th>
+                <th>物理記憶體(PSS)</th>
+                <th>共享記憶體(clean)</th>
+                <th>共享記憶體(dirty)</th>
+                <th>私有記憶體(clean)</th>
+                <th>私有記憶體(dirty)</th>
+                <th>referenced</th>
+                <th>anonymous</th>
+                <th>SWAP占用</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for m in memory_maps|sort(reverse=True, attribute="size") %}
+                <tr>
+                    <td>{{ m.path }}</td>
+                    <td>{{ m.rss }}</td>
+                    <td>{{ m.size }}</td>
+                    <td>{{ m.pss }}</td>
+                    <td>{{ m.shared_clean }}</td>
+                    <td>{{ m.shared_dirty }}</td>
+                    <td>{{ m.private_clean }}</td>
+                    <td>{{ m.private_dirty }}</td>
+                    <td>{{ m.referenced }}</td>
+                    <td>{{ m.anonymous }}</td>
+                    <td>{{ m.swap }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

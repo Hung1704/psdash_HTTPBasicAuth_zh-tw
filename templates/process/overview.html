@@ -1,0 +1,161 @@
+{% extends "process.html" %}
+{% block process_content %}
+    <table class="table">
+        <tr class="skip-border">
+            <td>進程ID</td>
+            <td>{{ process.pid }}</td>
+        </tr>
+        {% if process.parent_name %}
+        <tr>
+            <td>父進程(ID)</td>
+            <td><a href="{{ url_for(".process", pid=process.ppid) }}">{{ process.parent_name }}</a> ({{ process.ppid }})</td>
+        </tr>
+        {% endif %}
+        <tr>
+            <td>執行命令</td>
+            <td>
+                {{ process.cmdline.decode("utf-8") }}
+            </td>
+        </tr>
+        <tr>
+            <td>所屬用戶</td>
+            <td>{{ process.user or "-"}}</td>
+        </tr>
+        <tr>
+            <td>用戶ID</td>
+            <td>
+                <table class="table table-bordered">
+                    <tr>
+                        <td>real</td>
+                        <td>{{ process.uid_real }}</td>
+                    </tr>
+                    <tr>
+                        <td>effective</td>
+                        <td>{{ process.uid_effective }}</td>
+                    </tr>
+                    <tr>
+                        <td>saved</td>
+                        <td>{{ process.uid_saved }}</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>群組ID</td>
+            <td>
+                <table class="table table-bordered">
+                    <tr>
+                        <td>real</td>
+                        <td>{{ process.gid_real }}</td>
+                    </tr>
+                    <tr>
+                        <td>effective</td>
+                        <td>{{ process.gid_effective }}</td>
+                    </tr>
+                    <tr>
+                        <td>saved</td>
+                        <td>{{ process.gid_saved }}</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr>
+            <td>記憶體</td>
+            <td>
+                <table class="table table-bordered">
+                    <tr>
+                        <td>虛擬記憶體(rss)</td>
+                        <td>{{ process.mem_rss|filesizeformat }}</td>
+                    </tr>
+                    <tr>
+                        <td>物理記憶體(vms)</td>
+                        <td>{{ process.mem_vms|filesizeformat }}</td>
+                    </tr>
+                    <tr>
+                        <td>shared</td>
+                        <td>{{ process.mem_shared|filesizeformat }}</td>
+                    </tr>
+                    <tr>
+                        <td>text</td>
+                        <td>{{ process.mem_text|filesizeformat }}</td>
+                    </tr>
+                    <tr>
+                        <td>lib</td>
+                        <td>{{ process.mem_lib|filesizeformat }}</td>
+                    </tr>
+                    <tr>
+                        <td>data</td>
+                        <td>{{ process.mem_data|filesizeformat }}</td>
+                    </tr>
+                    <tr>
+                        <td>dirty</td>
+                        <td>{{ process.mem_dirty|filesizeformat }}</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>終端</td>
+            <td>{{ process.terminal }}</td>
+        </tr>
+        <tr>
+            <td>狀態</td>
+            <td>{{ process.status }}</td>
+        </tr>
+        <tr>
+            <td>優先級(Nice)</td>
+            <td>{{ process.nice }}</td>
+        </tr>
+        <tr>
+            <td>I/O優先級(Nice)</td>
+            <td>class: {{ process.io_nice_class }}, value: {{ process.io_nice_value }}</td>
+        </tr>
+        <tr>
+            <td>當前目錄</td>
+            <td>{{ process.cwd.decode("utf-8") }}</td>
+        </tr>
+        <tr>
+            <td>打開文件數</td>
+            <td>{{ process.num_files }}</td>
+        </tr>
+        <tr>
+            <td>線程</td>
+            <td>{{ process.num_threads }}</td>
+        </tr>
+        <tr>
+            <td>上下文切換</td>
+            <td>
+                <table class="table table-bordered">
+                    <tr>
+                        <td>voluntary</td>
+                        <td>{{ process.num_ctx_switches_vol }}</td>
+                    </tr>
+                    <tr>
+                        <td>involuntary</td>
+                        <td>{{ process.num_ctx_switches_invol }}</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>CPU使用時間</td>
+            <td>
+                <table class="table table-bordered">
+                    <tr>
+                        <td>user</td>
+                        <td>{{ process.cpu_times_user }}</td>
+                    </tr>
+                    <tr>
+                        <td>system</td>
+                        <td>{{ process.cpu_times_system }}</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>CPU親和性</td>
+            <td>{{ process.cpu_affinity|join(", ") }}</td>
+        </tr>
+    </table>
+{% endblock %}
