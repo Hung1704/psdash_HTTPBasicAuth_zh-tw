@@ -1,5 +1,7 @@
 # psdash\_HTTPBasicAuth
 
+This project uses code from [wenguonideshou/psdash_HTTPBasicAuth](https://github.com/wenguonideshou/psdash_HTTPBasicAuth). Special thanks to [wenguonideshou] for their contributions.
+
 簡介：在 psdash 的基礎上添加 HTTP 基本身份驗證（即打開頁面會彈出提示框，需要輸入用戶名和密碼），界面翻譯為中文，並增加展示所有節點基本狀態的主界面，可以理解為 psdash 的中文版分支。
 
 功能：psdash 是基於 psutil 和 zerorpc 的 Python 語言開發的主機監控面板，本分支包含 psdash 的所有功能，支持多節點/集群部署，所有數據每 3 秒自動更新，無需手動刷新頁面。
