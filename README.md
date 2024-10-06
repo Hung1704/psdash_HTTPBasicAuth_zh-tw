@@ -209,5 +209,7 @@ pip uninstall psdash
 rm -r /root/psdash_HTTPBasicAuth
 ```
 
-![面板](https://s1.ax1x.com/2017/12/18/OYE60.jpg) ![面板](https://s1.ax1x.com/2017/12/15/LmM4O.png) ![面板](https://s1.ax1x.com/2017/12/15/LmuE6.png) ![面板](https://s1.ax1x.com/2017/12/15/LmeD1.png) ![面板](https://s1.ax1x.com/2017/12/15/LmZuR.png) ![面板](https://s1.ax1x.com/2017/12/15/LmKUK.png) ![面板](https://s1.ax1x.com/2017/12/15/LmM4O.png) ![面板](https://s1.ax1x.com/2017/12/15/LmlCD.png)
-
+![test](Picture/cpu.png)
+![test](Picture/network.png)
+![test](Picture/process.png)
+![test](Picture/log.png)
